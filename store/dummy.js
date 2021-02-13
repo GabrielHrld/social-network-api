@@ -18,9 +18,14 @@ const get = async (table, id) => {
 };
 
 const upsert = async (table, data) => {
+  
+  if (!db[table]) {
+    db[table] = [];
+  }
   //empujamos a nuestra "db" los datos del nuevo usuario
   db[table].push(data);
 
+  console.log(db)
   return data;
 };
 
