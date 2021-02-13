@@ -1,23 +1,34 @@
 const db = {
-  user: [{ id: 1, name: "Gabriel" }],
+  user: [
+    { id: "1", name: "Gabriel" },
+    { id: "2", name: "Federico" },
+  ],
 };
 
-const list = (table) => {
+const list = async (table) => {
   return db[table];
 };
 
-const get = (table, id) => {
-  let collection = list(table);
+const get = async (table, id) => {
+  let collection = await list(table);
 
   return collection.filter((item) => item.id === id)[0] || null;
 };
 
-const upsert = (table, data) => {
-  db[collection].push(data);
+const upsert = async (table, data) => {
+  db[table].push(data);
+
+  return data;
 };
 
-const remove = (table, id) => {
-  return true;
+const remove = async (table, id) => {
+  const index = db[table].findIndex((item) => item.id === id);
+  if (index >= 0) {
+    db[table].splice(index, 1);
+    return true;
+  } else {
+    return false;
+  }
 };
 
 module.exports = {

@@ -5,6 +5,8 @@ const user = require("./components/user/network");
 
 const app = express();
 
+app.use(express.json());
+
 //ROUTER
 app.use("/api/user", user);
 
