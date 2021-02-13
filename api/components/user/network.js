@@ -1,7 +1,11 @@
 const express = require("express");
+const response = require('../../../network/response');
 
 const router = express.Router();
 
 router.get("/", (req, res) => {
-  res.send("todo funca");
+  // res.send("todo funca");
+  response.success(req, res, 'Todo correcto', 200);
 });
+
+module.exports = router;
