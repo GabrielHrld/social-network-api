@@ -11,6 +11,7 @@
   "author": "Gabriel Rodriguez <g.federico.rodriguez@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "nanoid": "^3.1.20"
   }
 }

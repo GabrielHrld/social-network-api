@@ -1,3 +1,4 @@
+const {nanoid} = require("nanoid");
 const TABLE = "user";
 
 module.exports = (injectedStore) => {
@@ -17,8 +18,18 @@ module.exports = (injectedStore) => {
   };
 
   //funcion para crear un usuario
-  const upsert = (data) => {
-    return store.upsert(TABLE, data);
+  const upsert = (body) => {
+    const user = {
+      name: body.name,
+    };
+
+    if (body.id) {
+      user.id = body.id;
+    } else {
+      user.id = nanoid();
+    }
+
+    return store.upsert(TABLE, user);
   };
 
   //funcion para eliminar un usuario
