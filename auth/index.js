@@ -17,7 +17,9 @@ const check = { //Objeto que guarda las funciones de check in
     const decoded = decodeHeader(req);
     console.log(decoded);
 
-    //COMPROBAR SI ES O NO PROPIO
+    if (decoded.id !== owner) {
+      throw new Error('No podes hacer esto');
+    }
   }
 }
 
