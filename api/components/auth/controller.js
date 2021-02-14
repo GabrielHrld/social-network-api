@@ -1,3 +1,4 @@
+const bcrypt = require("bcrypt");
 const auth = require("../../../auth");
 const TABLE = "auth";
 
@@ -14,17 +15,20 @@ module.exports = (injectedStore) => {
     //que le pasamos por parámetro
     const data = await store.query(TABLE, { username: username });
 
-    //si el password de nuestra base de datos coincide con la
-    //pasada por parámetro, devolvemos el JWT
-    if (data.password === password) {
-      return auth.sign(data);
-    } else {
-      throw new Error("Información inválida");
-    }
+    //si el password del parametro descifra el encriptado
+    //devolvemos el JWT
+    return bcrypt.compare(password, data.password)
+      .then((areEquals) => {
+      if (areEquals === true) {
+        return auth.sign(data);
+      } else {
+        throw new Error("Información inválida");
+      }
+    });
   };
 
   //funcion para crear un usuario autenticado
-  const upsert = (data) => {
+  const upsert = async (data) => {
     const authData = {
       id: data.id,
     };
@@ -34,7 +38,7 @@ module.exports = (injectedStore) => {
     }
 
     if (data.password) {
-      authData.password = data.password;
+      authData.password = await bcrypt.hash(data.password, 5);
     }
 
     return store.upsert(TABLE, authData);
