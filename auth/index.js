@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const config = require('../config');
+const error = require("../utils/error");
 const secret = config.jwt.secret;
 
 //funcion para logearse
@@ -18,7 +19,7 @@ const check = { //Objeto que guarda las funciones de check in
     console.log(decoded);
 
     if (decoded.id !== owner) {
-      throw new Error('No podes hacer esto');
+      throw error('No podes hacer esto', 401);
     }
   }
 }
