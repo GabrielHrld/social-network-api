@@ -13,48 +13,40 @@ router.put("/",secure('update'), upsert);
 router.delete("/:id", remove);
 
 //INTERNAL FUNCTIONS
-function list(req, res) {
+function list(req, res, next) {
   controller
     .list()
     .then((lista) => {
       response.success(req, res, lista, 200);
     })
-    .catch((error) => {
-      response.error(req, res, error.message, 500);
-    });
+    .catch(next);
 }
 
-function get(req, res) {
+function get(req, res, next) {
   controller
     .get(req.params.id)
     .then((user) => {
       response.success(req, res, user, 200);
     })
-    .catch((error) => {
-      response.error(req, res, error.message, 500);
-    });
+    .catch(next);
 }
 
-function upsert(req, res) {
+function upsert(req, res, next) {
   controller
     .upsert(req.body)
     .then((user) => {
       response.success(req, res, user, 201);
     })
-    .catch((error) => {
-      response.error(req, res, error.message, 500);
-    });
+    .catch(next);
 }
 
-function remove(req, res) {
+function remove(req, res, next) {
   controller
     .remove(req.params.id)
     .then((user) => {
       response.success(req, res, `${user} deleted succesfull`, 201);
     })
-    .catch((error) => {
-      response.error(req, res, error.message, 500);
-    });
+    .catch(next);
 }
 
 module.exports = router;
