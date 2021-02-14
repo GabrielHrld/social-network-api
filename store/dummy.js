@@ -7,7 +7,7 @@ const db = {
 
 const list = async (table) => {
   //retornamos la lista completa
-  return db[table];
+  return db[table] || [];
 };
 
 const get = async (table, id) => {
@@ -18,7 +18,7 @@ const get = async (table, id) => {
 };
 
 const upsert = async (table, data) => {
-  
+
   if (!db[table]) {
     db[table] = [];
   }
@@ -41,9 +41,19 @@ const remove = async (table, id) => {
   }
 };
 
+const query = async (table, q) => {
+  let collection = await list(table);
+  
+  let keys = Object.keys(q);
+  let key = keys[0]
+
+  return collection.filter((item) => item[key] === q[key])[0] || null;
+}
+
 module.exports = {
   list,
   get,
   upsert,
   remove,
+  query
 };
