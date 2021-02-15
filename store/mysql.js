@@ -51,10 +51,13 @@ const list = (table) => {
 
 //funcion para consultar un solo usuario a la DB
 const get = (table, where) => {
+
+  let sentence = `SELECT * FROM ${table} WHERE id=?`;
+  
   //retornamos una promesa para manejar los errores asíncronos
   return new Promise((resolve, reject) => {
     connection.query(
-      `SELECT * FROM ${table} WHERE ? `,
+      sentence,
       where,
       (error, data) => {
         if (error) {
@@ -99,13 +102,12 @@ const update = (table, data) => {
   });
 };
 
-//funcion que valida si se genera o se modifica un usuario
+//funcion que valida si se genera o se modifica una tabla
 const upsert = async (table, data) => {
   let row = [];
   if (data.id) {
     row = await get(table, data.id);
   }
-
   if (row.length === 0) {
     return insert(table, data);
   } else {
