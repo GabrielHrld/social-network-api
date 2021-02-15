@@ -50,11 +50,12 @@ const list = (table) => {
 };
 
 //funcion para consultar un solo usuario a la DB
-const get = (table, id) => {
+const get = (table, where) => {
   //retornamos una promesa para manejar los errores asíncronos
   return new Promise((resolve, reject) => {
     connection.query(
-      `SELECT * FROM ${table} WHERE id='${id}'`,
+      `SELECT * FROM ${table} WHERE ? `,
+      where,
       (error, data) => {
         if (error) {
           return reject(error);
@@ -100,7 +101,11 @@ const update = (table, data) => {
 
 //funcion que valida si se genera o se modifica un usuario
 const upsert = async (table, data) => {
-  const row = await get(table, data.id);
+  let row = [];
+  if (data.id) {
+    row = await get(table, data.id);
+  }
+
   if (row.length === 0) {
     return insert(table, data);
   } else {
@@ -108,9 +113,17 @@ const upsert = async (table, data) => {
   }
 };
 
-const query = (table, q) => {
+// funcion para hacer consultas a la DB
+const query = (table, q, join) => {
+  let joinQuery = "";   
+  if (join) {         
+    const key = Object.keys(join)[0];
+    const val = join[key];
+    joinQuery = `JOIN ${key} ON ${table}.${val} = ${key}.id`;
+  }
+
   return new Promise((resolve, reject) => {
-    connection.query(`SELECT * FROM ${table} WHERE ?`, q, (error, res) => {
+    connection.query(`SELECT * FROM ${table} ${joinQuery} WHERE ${table}.?`, q, (error, res) => {
       if (error) {
         return reject(error);
       } else {

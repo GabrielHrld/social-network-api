@@ -8,6 +8,8 @@ const router = express.Router();
 //ROUTES
 router.get("/", list);
 router.get("/:id", get);
+router.get("/:id/following", followers);
+router.post('/follow/:id', secure('follow'), follow)
 router.post("/", upsert);
 router.put("/",secure('update'), upsert);
 router.delete("/:id", remove);
@@ -49,4 +51,19 @@ function remove(req, res, next) {
     .catch(next);
 }
 
+function follow(req, res, next) {
+  controller.follow(req.user.id, req.params.id)
+    .then((data) => {
+      response.success(req, res, data, 201);
+    })
+    .then(next);
+}
+
+function followers(req, res, next) {
+  controller.followList(req.params.id)
+  .then((data) => {
+    response.success(req, res, data, 200);
+  })
+  .catch(next);
+}
 module.exports = router;

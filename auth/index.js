@@ -23,6 +23,10 @@ const check = {
       throw error("No podes hacer esto", 401);
     }
   },
+
+  logged: function (req) {
+    const decoded = decodeHeader(req);
+  },
 };
 
 //funcion para obtener el token limpio
