@@ -52,7 +52,13 @@ const list = (table) => {
 //funcion para consultar un solo usuario a la DB
 const get = (table, where) => {
 
-  let sentence = `SELECT * FROM ${table} WHERE id=?`;
+  let sentence = '';
+  if (table == "posts_likes") {
+    sentence = `SELECT * FROM ${table} WHERE post_id=?`
+  } else {
+    sentence = `SELECT * FROM ${table} WHERE id=?`;
+  }
+  
   
   //retornamos una promesa para manejar los errores asíncronos
   return new Promise((resolve, reject) => {

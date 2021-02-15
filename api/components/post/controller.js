@@ -32,9 +32,24 @@ module.exports = (injectedStore) => {
     return store.upsert(TABLE, postData);
   };
 
+  //funcion para dar likes a un post
+  const setLike = (user, post) => {
+    return store.upsert(TABLE + "_likes", {
+      user_id: user,
+      post_id: post,
+    });
+  };
+
+  //funcion para obtener los likes de un post
+  const getLike = (id) => {
+    return store.get(TABLE + "_likes", id)
+  }
+
   return {
     list,
     upsert,
-    get
+    get,
+    setLike,
+    getLike
   };
 };

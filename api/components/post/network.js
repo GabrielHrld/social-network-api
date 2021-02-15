@@ -8,6 +8,8 @@ const router = express.Router();
 //ROUTES
 router.get("/", postList);
 router.get("/:id", getPost);
+router.get("/:id/likes", getLikes);
+router.post('/like/:id', secure('likes'), setLike)
 router.post("/", upsert);
 router.put("/", secure("update"), upsert);
 
@@ -38,4 +40,19 @@ function upsert(req, res, next) {
     .catch(next);
 }
 
+function setLike(req, res, next) {
+  controller.likes(req.body.user, req.params.id)
+    .then((data) => {
+      response.success(req, res, data, 201);
+    })
+    .then(next);
+}
+
+function getLikes(req, res, next) {
+  controller.getLike(req.params.id)
+  .then((data) => {
+    response.success(req, res, data, 200);
+  })
+  .catch(next);
+}
 module.exports = router;
