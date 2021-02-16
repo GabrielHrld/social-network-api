@@ -1,5 +1,13 @@
 {
   "version": 2,
+  "env": {
+    "JWT_SECRET": "secretodehrld!?=$",
+    "MYSQL_HOST": "freedb.tech",
+    "MYSQL_USER": "freedbtech_heraldHRLD",
+    "MYSQL_PASSWORD": "@SJnXkza52Qg7C3",
+    "MYSQL_DATABASE": "freedbtech_hrld_social_network",
+    "MYSQL_SRV_HOST": "localhost"
+  },
   "builds": [
       {
           "src": "api/index.js",
