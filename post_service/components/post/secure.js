@@ -8,7 +8,7 @@ module.exports = function checkAuth(action){
   const middleware = (req, res, next) => {
     switch(action){
       case 'update':
-        console.log(req.body.user)
+        //console.log(req.body.user)
         const owner = req.body.user;
         auth.check.own(req, owner);
         next();
